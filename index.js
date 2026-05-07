@@ -49,7 +49,35 @@ async function gestion_de_productos ( args = [] ) {
                     console.log (error);
                     break;
                 }
-            }
+            } else {
+                console.log ("Comando incorrecto");
+                break;
+            };
+        case "POST":
+            if (args.length == 5 && args[1] == "products") {
+                const [ , , nombre, precio, categoria ] = args;
+                const response = await fetch (`${url}/products`, {
+                    method : "POST",
+                    headers : { 'Content-Type': 'application/json' },
+                    body : JSON.stringify (
+                        {
+                            nombre,
+                            precio,
+                            categoria 
+                        }
+                    )
+                });
+                if (!response.ok) {
+                    throw new Error ("Error en la solicitud");
+                };
+                const data = await response.json ();
+                console.log (args);
+                console.log (data);
+                break;
+            } else {
+                console.log ("Solicitud incompleta");
+                break;
+            };
     }
 };
 
